@@ -1,5 +1,6 @@
 # Falco
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](./LICENSE)
 为 Windows 10/11 打造的深度清理、应用管理与系统监控图形工具。
 
 
@@ -110,6 +111,10 @@ Falco/
 ## 设计参考与致谢
 
 - [Mole](https://github.com/tw93/Mole) —— 模块划分、界面风格与"修改前先备份、删除可撤销"的安全理念
+
+## 许可证
+
+本项目基于 [GPL-3.0](./LICENSE) 许可证开源。
 
 ## 免责声明
 
