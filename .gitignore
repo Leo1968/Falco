@@ -5,7 +5,7 @@ dist/
 *.log
 *.tmp
 
-# 未被引用的原始素材（运行与构建使用 falco.ico / falco logo.png / assets/）
+# 原始素材（未引用）
 falco.png
 
 # 竞品调研文档（仅保留本地，不上传）
@@ -13,3 +13,12 @@ falco.png
 
 # 中文版使用指南（仓库内提供英文版 User-Guide.md）
 使用指南.md
+
+# GUI 付费版相关内容（仅保留本地，不在开源仓库分发）
+Falco.ps1
+Falco-Setup.iss
+FalcoLauncher.vbs
+User-Guide.md
+falco.ico
+falco logo.png
+assets/
