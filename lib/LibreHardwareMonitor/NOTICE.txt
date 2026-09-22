@@ -1,0 +1,8 @@
+Falco bundles LibreHardwareMonitorLib 0.9.6.
+
+Project: https://github.com/LibreHardwareMonitor/LibreHardwareMonitor
+License: Mozilla Public License 2.0 (MPL-2.0)
+
+The bundled library is used as an optional sensor provider. If it cannot be
+loaded or the firmware exposes no value, Falco falls back to the Windows ACPI
+temperature provider.
