@@ -2,8 +2,6 @@
 
 为 Windows 10/11 打造的深度清理、应用管理与系统监控图形工具。
 
-> **定位说明**：Falco 填补的是**Windows 上的 Mole 图形界面**这个空缺。
-
 
 ## 当前功能
 
@@ -97,7 +95,6 @@ Falco/
 ## 设计参考与致谢
 
 - [Mole](https://github.com/tw93/Mole) —— 模块划分、界面风格与"修改前先备份、删除可撤销"的安全理念
-- 《Windows Optimizer 全球开源竞品 Top 20 深度拆解》—— Windows 优化器功能取舍参考
 
 ## 免责声明
 
