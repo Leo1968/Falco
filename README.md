@@ -116,6 +116,8 @@ Falco/
 
 本项目基于 [GPL-3.0](./LICENSE) 许可证开源。
 
+`lib/LibreHardwareMonitor/` 下的第三方组件 [LibreHardwareMonitorLib](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor)（v0.9.6）遵循 **Mozilla Public License 2.0（MPL-2.0）** 许可，作为独立的可选传感器提供方与本项目分离：这些文件保留其原始许可与声明（见 `lib/LibreHardwareMonitor/NOTICE.txt`），不受本项目 GPL-3.0 条款影响。
+
 ## 免责声明
 
 本工具会修改系统注册表与服务配置。虽然所有修改均有备份且可恢复，仍建议：
