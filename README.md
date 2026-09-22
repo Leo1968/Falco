@@ -16,6 +16,22 @@
 ### 温度监测 — LibreHardwareMonitor 集成（可选）
 内置 [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) 传感器库（`lib/LibreHardwareMonitor/`）：库存在时直接读取 CPU / GPU 温度传感器（显示在 CPU 徽章、温度卡片）；库缺失或无可用传感器时自动降级为 ACPI 热区温度，再不可得则显示"—"，全程不影响其它功能。
 
+### 命令行版 — Falco-CLI
+与 GUI 共享同一引擎与数据目录（`C:\ProgramData\Falco`）的命令行版，子命令风格对齐 `mo` CLI：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\Falco-CLI.ps1 status -Json
+powershell -ExecutionPolicy Bypass -File .\Falco-CLI.ps1 tweaks list
+powershell -ExecutionPolicy Bypass -File .\Falco-CLI.ps1 tweaks apply safe          # 低风险四项
+powershell -ExecutionPolicy Bypass -File .\Falco-CLI.ps1 tweaks revert <Id|all>
+powershell -ExecutionPolicy Bypass -File .\Falco-CLI.ps1 clean scan
+powershell -ExecutionPolicy Bypass -File .\Falco-CLI.ps1 clean run -Items temp,thumbs -Yes
+powershell -ExecutionPolicy Bypass -File .\Falco-CLI.ps1 purge D:\code -Days 7
+powershell -ExecutionPolicy Bypass -File .\Falco-CLI.ps1 large C:\ -MinMB 500 -Top 20
+```
+
+子命令：`status` / `tweaks`（list, backup, apply, revert）/ `clean`（scan, run）/ `purge` / `large` / `help`。应用与还原自动先备份；高风险项（禁用 SysMain / Windows Search）需 `-Yes` 确认；`-Json` 可机器读取。引擎函数在运行时从 `Falco.ps1` 提取，与 GUI 永远保持同一套逻辑。
+
 ### 优化 — 三档一键优化 + 状态化单项管理
 这是 Windows 用户的高频需求，因此保留：
 
@@ -100,6 +116,7 @@ C:\ProgramData\Falco\
 Falco/
 ├── Falco.ps1                       # 主程序（单文件，含全部功能）
 ├── FalcoLauncher.vbs               # 启动器（优先 PowerShell 7，静默启动）
+├── Falco-CLI.ps1                   # 命令行版（与 GUI 共享引擎）
 ├── Falco-Setup.iss                 # Inno Setup 6 安装包脚本
 ├── falco.ico                       # 应用图标（多尺寸）
 ├── falco logo.png                  # Logo 原图
