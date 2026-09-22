@@ -7,3 +7,6 @@ dist/
 
 # 未被引用的原始素材（运行与构建使用 falco.ico / falco logo.png / assets/）
 falco.png
+
+# 竞品调研文档（仅保留本地，不上传）
+《Windows Optimizer 全球开源竞品 Top 20 深度拆解》.md
