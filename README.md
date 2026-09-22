@@ -5,11 +5,18 @@
 
 ## 当前功能
 
-### 状态 — 实时监控 + 分维度健康
-健康度 / CPU / GPU / 内存 / 温度 / 磁盘 / 网络 / 电源计划八卡片实时监控，进程列表按 CPU 占用排序。logo 菜单「运行诊断」可随时对系统配置做只读体检（隐私 / 性能 / 更新 / 清理 / 备份五个维度各 0–100 分）并弹窗报告结果，评分项与优化页共享同一套 Detect 判断标准。
+### 状态 — 实时监控仪表盘
+健康度 / CPU / GPU / 内存 / 温度 / 磁盘 / 网络 / 电源计划八卡片仪表盘。每张卡片为「图标+标题+徽章 → 大数值 → 图表 → 脚注」四段式布局，首列（健康度 / 温度）与其余列宽 14:9；徽章显示实时信息（CPU 温度、内存压力、温度状态、磁盘总容量、网卡名）。
+
+- **健康度**：0–100 综合分 + 一句话状态提示（如「磁盘占用偏高」），标题行展示 CPU 型号 / 内存 / 系统版本标签
+- **进程列表**：名称 / PID / CPU（迷你柱条 + 百分比）/ 内存四列左右对齐铺满整行，按 CPU 占用排序
+- **logo 菜单**：点击导航栏隼形 Logo 弹出「设置 / 运行诊断 / 检查更新 / 关于 Falco」——运行诊断会对系统配置做只读体检（隐私 / 性能 / 更新 / 清理 / 备份五个维度各 0–100 分）并弹窗报告结果，评分项与优化页共享同一套 Detect 判断标准
+
+### 温度监测 — LibreHardwareMonitor 集成（可选）
+内置 [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) 传感器库（`lib/LibreHardwareMonitor/`）：库存在时直接读取 CPU / GPU 温度传感器（显示在 CPU 徽章、温度卡片）；库缺失或无可用传感器时自动降级为 ACPI 热区温度，再不可得则显示"—"，全程不影响其它功能。
 
 ### 优化 — 三档一键优化 + 状态化单项管理
-这是Windows 用户的高频需求，因此保留：
+这是 Windows 用户的高频需求，因此保留：
 
 | 模式 | 目标 | 说明 |
 |------|------|------|
@@ -44,16 +51,21 @@
 
 - Windows 10 / 11
 - Windows PowerShell 5.1+（系统自带，无需安装任何东西）
+- PowerShell 7+（可选；`FalcoLauncher.vbs` 启动器会优先使用）
 
 ### 运行方式
 
-**方式一**：右键 `Falco.ps1` → "使用 PowerShell 运行"
+**方式一**：双击 `FalcoLauncher.vbs` —— 优先查找 PowerShell 7 静默启动，未安装则自动回退系统自带 PowerShell
 
-**方式二**：命令行运行（推荐）
+**方式二**：右键 `Falco.ps1` → "使用 PowerShell 运行"
+
+**方式三**：命令行运行
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\Falco.ps1
 ```
+
+**安装包**：用 [Inno Setup 6](https://jrsoftware.org/isinfo.php) 编译 `Falco-Setup.iss`，生成 `dist/Falco-1.2.0.exe`——安装到 `%ProgramFiles%\Falco`、创建开始菜单项并附带使用指南。
 
 ### 权限说明
 
@@ -85,11 +97,14 @@ C:\ProgramData\Falco\
 
 ```
 Falco/
-├── Falco.ps1                                # 主程序（单文件）
-├── falco.ico                                # 应用图标（白圆底黑隼，多尺寸）
-├── falco logo.png                           # Logo 原图
-├── User-Guide.md                               # 新手使用指南
-└── 《Windows Optimizer 全球开源竞品 Top 20 深度拆解》.md   # 竞品调研笔记
+├── Falco.ps1                       # 主程序（单文件，含全部功能）
+├── FalcoLauncher.vbs               # 启动器（优先 PowerShell 7，静默启动）
+├── Falco-Setup.iss                 # Inno Setup 6 安装包脚本
+├── falco.ico                       # 应用图标（多尺寸）
+├── falco logo.png                  # Logo 原图
+├── User-Guide.md                   # 新手使用指南（英文）
+├── assets/                         # 界面素材
+└── lib/LibreHardwareMonitor/       # 温度/硬件传感器库（可选，缺失时自动降级）
 ```
 
 ## 设计参考与致谢
