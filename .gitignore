@@ -26,3 +26,6 @@ Register-Shortcut.ps1
 
 # GUI 迁移评估（付费产品规划，私有）
 迁移评估-GUI-CSharp.md
+
+# C# GUI 源码（付费闭源，本地私有）
+src/
