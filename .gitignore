@@ -29,3 +29,20 @@ Register-Shortcut.ps1
 
 # C# GUI 源码（付费闭源，本地私有）
 src/
+
+# GUI 打包链路（付费闭源，本地私有）
+Falco-Setup-2.0.iss
+src/Falco.App/release/
+src/Falco.App/publish*/
+Build-2.0.ps1
+
+# 临时调试文件（截图/诊断脚本）
+.tmp-*
+.plist*.png
+
+# 本地私有内容（付费产品规划/GUI 组件/名画素材/iPhone 方案/第三方项目）
+falco-workflow.md
+Masterpieces/
+falco_monitoring_components/
+iPhone/
+open-museum-mcp-main/
