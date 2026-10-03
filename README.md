@@ -11,9 +11,9 @@ A system optimization and cleanup toolkit for Windows 10/11 — the command-line
 | Edition | Form | License | Availability |
 |---------|------|---------|--------------|
 | **Falco CLI** (this repo) | Command-line tool | GPL-3.0, free & open source | `git clone` and run |
-| **Falco GUI** (desktop app) | GUI: live status dashboard, one-click boost, deep clean, software management, disk analysis, tray HUD, hourly World Art Gallery | Free to use (closed-source freeware) | [Download the installer from Releases](../../releases) (`gui-v` tag prefix) |
+| **Falco GUI** (desktop app) | GUI: live status dashboard, one-click boost, deep clean, software management, disk analysis, tray HUD, hourly World Art Gallery | Free to use (closed-source freeware) | [Download the installer from Releases](https://github.com/Leo1968/Falco/releases/latest) (`gui-v` tag prefix) |
 
-The GUI edition is **free to use and free to redistribute as the original, unmodified installer**, but its source code is not published and reverse engineering is not permitted. This repository hosts the free, open-source CLI edition; GUI installers are also published under [Releases](../../releases) with the `gui-v` tag prefix. Feedback and bug reports go to this repo's Issues.
+The GUI edition is **free to use and free to redistribute as the original, unmodified installer**, but its source code is not published and reverse engineering is not permitted. This repository hosts the free, open-source CLI edition; GUI installers are also published under [Releases](https://github.com/Leo1968/Falco/releases) with the `gui-v` tag prefix. Feedback and bug reports go to this repo's Issues.
 
 > ⚠️ **Note on installing the GUI edition (transitional)**: the installer is not code-signed yet. If Windows SmartScreen shows "Windows protected your PC" when you run the installer, click "More info" → "Run anyway"; the UAC prompt mentioning an "unknown publisher" is expected — click "Yes" to continue installing.
 
