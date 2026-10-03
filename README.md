@@ -1,73 +1,75 @@
 # Falco CLI
 
-为 Windows 10/11 打造的系统优化与清理工具：命令行版开源，图形界面版免费（闭源）。两者均见下文。
+English | [简体中文](./README.zh-CN.md)
+
+A system optimization and cleanup toolkit for Windows 10/11 — the command-line edition is open source, and the GUI edition is free (closed-source freeware). Both are described below.
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](./LICENSE)
 
-## 版本与获取
+## Editions & Availability
 
-| 版本 | 形态 | 许可 | 获取方式 |
-|------|------|------|----------|
-| **Falco CLI**（本仓库） | 命令行工具 | GPL-3.0，免费开源 | `git clone` 即用 |
-| **Falco GUI**（图形界面版） | 图形界面：状态仪表盘、一键优化、深度清理、软件管理、磁盘分析、托盘 HUD、每小时名画展 | 免费使用（闭源专有软件） | [Releases 下载安装包](../../releases)（`gui-v` 前缀标签） |
+| Edition | Form | License | Availability |
+|---------|------|---------|--------------|
+| **Falco CLI** (this repo) | Command-line tool | GPL-3.0, free & open source | `git clone` and run |
+| **Falco GUI** (desktop app) | GUI: live status dashboard, one-click boost, deep clean, software management, disk analysis, tray HUD, hourly World Art Gallery | Free to use (closed-source freeware) | [Download the installer from Releases](../../releases) (`gui-v` tag prefix) |
 
-GUI 版**免费使用、自由分发原始安装包**，但源码不公开、不接受逆向工程；本仓库包含免费开源的命令行版，GUI 安装包同样在 [Releases](../../releases) 提供（`gui-v` 前缀标签）。反馈请到本仓库 Issues。
+The GUI edition is **free to use and free to redistribute as the original, unmodified installer**, but its source code is not published and reverse engineering is not permitted. This repository hosts the free, open-source CLI edition; GUI installers are also published under [Releases](../../releases) with the `gui-v` tag prefix. Feedback and bug reports go to this repo's Issues.
 
-> ⚠️ **安装 GUI 版时的提示（过渡说明）**：安装程序暂未做数字签名。运行安装包时若 Windows 弹出蓝色 SmartScreen"已保护你的电脑"，请点"更多信息"→"仍要运行"；UAC 提示"未知发布者"属正常现象，点"是"继续安装即可。
+> ⚠️ **Note on installing the GUI edition (transitional)**: the installer is not code-signed yet. If Windows SmartScreen shows "Windows protected your PC" when you run the installer, click "More info" → "Run anyway"; the UAC prompt mentioning an "unknown publisher" is expected — click "Yes" to continue installing.
 
-## 功能
+## Features
 
-- **status**：健康度评分（0–100）+ CPU / 内存 / 磁盘 / 温度 / 开机时长快照，`-Json` 机器可读
-- **tweaks**：六个系统优化项（传递优化 / 后台应用 / 视觉效果 / 活动时间 / SysMain / Windows Search）的查看、备份、应用与还原，写入前回读验证、失败自动回滚
-- **clean**：临时文件 / Windows Update 缓存 / 缩略图缓存 / 回收站的扫描与清理
-- **purge**：构建产物（node_modules / target / build 等）扫描，7 天活跃、含密钥、嵌套仓库自动跳过
-- **large**：大文件扫描
+- **status** — health score (0–100) plus a CPU / memory / disk / temperature / uptime snapshot; `-Json` for machine-readable output
+- **tweaks** — inspect, back up, apply and revert six system tweaks (Delivery Optimization / Background apps / Visual effects / Active hours / SysMain / Windows Search); every write is read-back verified and rolled back automatically on failure
+- **clean** — scan and clean temp files / Windows Update cache / thumbnail cache / Recycle Bin
+- **purge** — scan for build artifacts (node_modules / target / build, etc.); automatically skips anything active within 7 days, containing secrets, or inside nested repositories
+- **large** — large-file scan
 
-温度数据优先来自 [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor)（可选依赖，`lib/` 目录），缺失时自动降级为 ACPI 热区。
+Temperature data comes from [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) (optional dependency, `lib/` folder); when it is missing, the tool automatically falls back to the ACPI thermal zone.
 
-## 使用
+## Usage
 
 ```powershell
-# 系统状态与健康度
+# System status & health score
 powershell -ExecutionPolicy Bypass -File .\Falco-CLI.ps1 status -Json
 
-# 优化项
+# Tweaks
 powershell -ExecutionPolicy Bypass -File .\Falco-CLI.ps1 tweaks list
-powershell -ExecutionPolicy Bypass -File .\Falco-CLI.ps1 tweaks apply safe        # 低风险四项
+powershell -ExecutionPolicy Bypass -File .\Falco-CLI.ps1 tweaks apply safe        # the four low-risk tweaks
 powershell -ExecutionPolicy Bypass -File .\Falco-CLI.ps1 tweaks apply AH-001 -AHStart 8 -AHEnd 22
 powershell -ExecutionPolicy Bypass -File .\Falco-CLI.ps1 tweaks revert <Id|all>
 
-# 清理
+# Cleanup
 powershell -ExecutionPolicy Bypass -File .\Falco-CLI.ps1 clean scan
 powershell -ExecutionPolicy Bypass -File .\Falco-CLI.ps1 clean run -Items temp,thumbs -Yes
 
-# 构建产物与大文件
+# Build artifacts & large files
 powershell -ExecutionPolicy Bypass -File .\Falco-CLI.ps1 purge D:\code -Days 7
 powershell -ExecutionPolicy Bypass -File .\Falco-CLI.ps1 large C:\ -MinMB 500 -Top 20
 ```
 
-### 权限说明
+### Permissions
 
-`status` / `tweaks list` / `clean scan` / `purge` / `large` 为只读或无需提权；`tweaks apply / revert`、`clean run` 中的 WU 缓存清理需要**管理员权限**。所有修改执行前自动备份到 `C:\ProgramData\Falco\Backups`，还原脚本为 `Restore-Falco.ps1`。
+`status` / `tweaks list` / `clean scan` / `purge` / `large` are read-only or need no elevation; `tweaks apply / revert` and the Windows Update cache part of `clean run` require **administrator rights**. All changes are backed up automatically to `C:\ProgramData\Falco\Backups` before they are applied; the restore script is `Restore-Falco.ps1`.
 
-## 项目结构
+## Project Structure
 
 ```
 Falco/
-├── Falco-CLI.ps1                   # 命令行工具（引擎内嵌，单文件）
-└── lib/LibreHardwareMonitor/       # 温度/硬件传感器库（可选，缺失时自动降级）
+├── Falco-CLI.ps1                   # CLI tool (self-contained, single file)
+└── lib/LibreHardwareMonitor/       # Temperature / hardware sensor library (optional, auto-fallback when missing)
 ```
 
-## 许可证
+## License
 
-本项目基于 [GPL-3.0](./LICENSE) 许可证开源。
+This project is open source under the [GPL-3.0](./LICENSE) license.
 
-`lib/LibreHardwareMonitor/` 下的第三方组件 [LibreHardwareMonitorLib](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor)（v0.9.6）遵循 **Mozilla Public License 2.0（MPL-2.0）** 许可，作为独立的可选传感器提供方与本项目分离：这些文件保留其原始许可与声明（见 `lib/LibreHardwareMonitor/NOTICE.txt`），不受本项目 GPL-3.0 条款影响。
+The third-party component [LibreHardwareMonitorLib](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) (v0.9.6) under `lib/LibreHardwareMonitor/` is licensed under the **Mozilla Public License 2.0 (MPL-2.0)** and stays a separate, optional sensor provider: those files retain their original license and notices (see `lib/LibreHardwareMonitor/NOTICE.txt`) and are not affected by this project's GPL-3.0 terms.
 
-## 免责声明
+## Disclaimer
 
-本工具会修改系统注册表与服务配置。虽然所有修改均有备份且可恢复，仍建议：
+This tool modifies system registry settings and service configurations. Although every change is backed up and reversible, it is recommended that you:
 
-1. 首次使用前手动创建一个系统还原点
-2. 重要数据自行做好备份
-3. 恢复默认设置后建议重启系统
+1. Manually create a system restore point before first use
+2. Keep your own backups of important data
+3. Restart the system after restoring defaults
