@@ -4,6 +4,7 @@ src/Falco.App/bin/
 src/Falco.App/obj/
 src/Falco.App/release/
 src/Falco.App/publish*/
+src/.git-falco-gui-archive/
 
 # 临时文件与本地预览
 *.log
