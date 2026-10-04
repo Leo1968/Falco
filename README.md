@@ -15,6 +15,11 @@ English | [简体中文](./README.zh-CN.md)
 | License | GPL-3.0 | GPL-3.0 |
 | Get it | [Installer from Releases](../../releases) or [build from source](#build-from-source) | `git clone` and run |
 
+| Dark theme | Light theme |
+|---|---|
+| ![dark](src/docs/screenshots/status-dark.png) | ![light](src/docs/screenshots/status-light.png) |
+
+
 ## Falco GUI
 
 - **Status dashboard** — health score (0–100), CPU / GPU / memory / disk / network live charts, CPU & GPU temperature, top processes

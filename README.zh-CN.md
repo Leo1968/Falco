@@ -111,3 +111,8 @@ Falco 会修改系统注册表与服务配置。虽然所有修改均有备份�
 3. 恢复默认设置后重启系统
 
 请自行斟酌使用风险。
+
+| 深色主题 | 浅色主题 |
+|---|---|
+| ![dark](src/docs/screenshots/status-dark.png) | ![light](src/docs/screenshots/status-light.png) |
+
