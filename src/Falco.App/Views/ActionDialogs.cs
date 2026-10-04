@@ -49,14 +49,19 @@ public class FalcoDialog : Window
 /// <summary>立即加速结果。</summary>
 public class BoostResultDialog : FalcoDialog
 {
-    public BoostResultDialog(double freedGB, int trimmed, int total) : base(Lang.T("dlg.boost.title"), 400, 372)
+    public BoostResultDialog(double freedGB, int trimmed, int total) : base(Lang.T("dlg.boost.title"), 400, 324)
     {
         var green = Res<SolidColorBrush>("BrushGreen");
         var fg2 = Res<SolidColorBrush>("BrushText2");
         var sp = new StackPanel { Margin = new Thickness(28, 18, 28, 16) };
 
-        // 星舰发射动态图标（替代 🚀 emoji）：火焰闪烁 + 舰体浮动
-        var rocket = new StarshipIcon { HorizontalAlignment = HorizontalAlignment.Center, Margin = new Thickness(0, 2, 0, 4) };
+        // 星舰发射动态图标（替代 🚀 emoji）：火焰闪烁 + 舰体浮动；LayoutTransform 缩到 30%（约 36×40）
+        var rocket = new StarshipIcon
+        {
+            HorizontalAlignment = HorizontalAlignment.Center,
+            Margin = new Thickness(0, 2, 0, 4),
+            LayoutTransform = new ScaleTransform(0.3, 0.3),
+        };
         sp.Children.Add(rocket);
         AddTxt(sp, Lang.T("dlg.boost.done"), 18, Res<SolidColorBrush>("BrushText"), true, mt: 6);
         AddTxt(sp, Lang.F("dlg.boost.freed", freedGB.ToString("0.##")), 14, green, mt: 10);

@@ -492,7 +492,7 @@ public partial class StatusPage : UserControl
             Highlight(PwrBalanced, guid.Equals(PowerSchemes[1].guid, StringComparison.OrdinalIgnoreCase));
             Highlight(PwrHigh, guid.Equals(PowerSchemes[2].guid, StringComparison.OrdinalIgnoreCase));
             var scheme = PowerSchemes.FirstOrDefault(x => x.guid.Equals(guid, StringComparison.OrdinalIgnoreCase));
-            PowerName.Text = scheme.key == null ? guid : Lang.T(scheme.key);
+            PowerName.Text = scheme.key == null ? guid : Lang.T(scheme.key + ".short");
         }
     }
 

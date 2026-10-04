@@ -1,6 +1,6 @@
 ﻿; Falco GUI 2.0 安装包（C#/WPF 版，自包含 .NET 8 + ReadyToRun，无运行时依赖）
 #define MyAppName "Falco"
-#define MyAppVersion "2.4.9"
+#define MyAppVersion "2.4.10"
 #define MyAppPublisher "Falco"
 #define MyAppExeName "Falco.exe"
 
