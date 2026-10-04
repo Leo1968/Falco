@@ -1,48 +1,37 @@
 # 构建产物（安装包通过 GitHub Releases 发布）
 dist/
+src/Falco.App/bin/
+src/Falco.App/obj/
+src/Falco.App/release/
+src/Falco.App/publish*/
 
-# 临时文件
+# 临时文件与本地预览
 *.log
 *.tmp
+.tmp-*
+.plist*.png
+preview-nav/
+preview-globe/
 
-# 原始素材（未引用）
-falco.png
-
-# 竞品调研文档（仅保留本地，不上传）
+# 私有文档（商业规划/竞品调研，仅本地不上库）
+迁移评估-GUI-CSharp.md
 《Windows Optimizer 全球开源竞品 Top 20 深度拆解》.md
+falco-workflow.md
 
-# 中文版使用指南（仓库内提供英文版 User-Guide.md）
-使用指南.md
+# 本地运行缓存
+Masterpieces/
 
-# GUI 付费版相关内容（仅保留本地，不在开源仓库分发）
+# 私有规划（未开源方案）
+iPhone/
+open-museum-mcp-main/
+falco_monitoring_components/
+
+# 未引用的原始素材
+falco.png
+falco logo.png
+
+# 旧版 PS 版 1.3.0 遗留（已被 Falco-CLI.ps1 取代）
 Falco.ps1
 Falco-Setup.iss
 FalcoLauncher.vbs
-User-Guide.md
-falco.ico
-falco logo.png
-assets/
 Register-Shortcut.ps1
-
-# GUI 迁移评估（付费产品规划，私有）
-迁移评估-GUI-CSharp.md
-
-# C# GUI 源码（付费闭源，本地私有）
-src/
-
-# GUI 打包链路（付费闭源，本地私有）
-Falco-Setup-2.0.iss
-src/Falco.App/release/
-src/Falco.App/publish*/
-Build-2.0.ps1
-
-# 临时调试文件（截图/诊断脚本）
-.tmp-*
-.plist*.png
-
-# 本地私有内容（付费产品规划/GUI 组件/名画素材/iPhone 方案/第三方项目）
-falco-workflow.md
-Masterpieces/
-falco_monitoring_components/
-iPhone/
-open-museum-mcp-main/

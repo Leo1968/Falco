@@ -1,0 +1,61 @@
+<UserControl x:Class="Falco.App.Views.SoftwarePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="Transparent">
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <StackPanel Margin="24,8,24,16">
+
+      <Button Style="{StaticResource BackLink}" Content="{DynamicResource nav.back}" Margin="0,2,0,6" Click="OnBack"/>
+
+      <!-- 启动项 -->
+      <Border Style="{StaticResource Card}">
+        <StackPanel>
+          <DockPanel Margin="4,0,0,6">
+            <TextBlock Text="{DynamicResource soft.startup.title}" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource BrushText}" VerticalAlignment="Center"/>
+            <Button DockPanel.Dock="Right" Style="{StaticResource DlgBtn}" Content="{DynamicResource common.refresh}" Margin="8,0,0,0" Click="OnStartupRefresh"/>
+            <TextBlock x:Name="StartupRes" Text="{DynamicResource soft.startup.hint}" Style="{StaticResource SubText}" VerticalAlignment="Center" Margin="8,0,0,0"/>
+          </DockPanel>
+          <StackPanel x:Name="StartupList" Margin="4,2,4,0" MaxHeight="220"/>
+        </StackPanel>
+      </Border>
+
+      <!-- 计划任务（第三方开机自启） -->
+      <Border Style="{StaticResource Card}">
+        <StackPanel>
+          <DockPanel Margin="4,0,0,6">
+            <TextBlock Text="{DynamicResource soft.tasks.title}" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource BrushText}" VerticalAlignment="Center"/>
+            <Button DockPanel.Dock="Right" Style="{StaticResource DlgBtn}" Content="{DynamicResource common.refresh}" Margin="8,0,0,0" Click="OnTaskRefresh"/>
+            <TextBlock x:Name="TasksRes" Text="{DynamicResource soft.tasks.hint}" Style="{StaticResource SubText}" VerticalAlignment="Center" Margin="8,0,0,0"/>
+          </DockPanel>
+          <StackPanel x:Name="TaskList" Margin="4,2,4,0" MaxHeight="180"/>
+        </StackPanel>
+      </Border>
+
+      <!-- 已安装应用 -->
+      <Border Style="{StaticResource Card}">
+        <StackPanel>
+          <DockPanel Margin="4,0,0,6">
+            <TextBlock Text="{DynamicResource soft.apps.title}" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource BrushText}" VerticalAlignment="Center"/>
+            <Button DockPanel.Dock="Right" Style="{StaticResource DlgBtn}" Content="{DynamicResource soft.apps.uninstall}" Margin="8,0,0,0" Click="OnUninstall"/>
+            <Button DockPanel.Dock="Right" Style="{StaticResource DlgBtn}" Content="{DynamicResource common.refresh}" Margin="8,0,0,0" Click="OnAppRefresh"/>
+            <TextBlock x:Name="AppRes" Text="" Style="{StaticResource SubText}" VerticalAlignment="Center" Margin="8,0,0,0"/>
+          </DockPanel>
+          <StackPanel x:Name="AppList" Margin="4,2,4,0" MaxHeight="340"/>
+        </StackPanel>
+      </Border>
+
+      <!-- 卸载残留 -->
+      <Border Style="{StaticResource Card}">
+        <StackPanel>
+          <DockPanel Margin="4,0,0,6">
+            <TextBlock Text="{DynamicResource soft.residue.title}" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource BrushText}" VerticalAlignment="Center"/>
+            <Button DockPanel.Dock="Right" Style="{StaticResource DlgBtn}" Content="{DynamicResource clean.clean.selected}" Margin="8,0,0,0" Click="OnResidueClean"/>
+            <Button DockPanel.Dock="Right" Style="{StaticResource DlgBtn}" Content="{DynamicResource soft.residue.scan}" Margin="8,0,0,0" Click="OnResidueScan"/>
+            <TextBlock x:Name="ResidueRes" Text="{DynamicResource soft.residue.hint}" Style="{StaticResource SubText}" VerticalAlignment="Center" Margin="8,0,0,0"/>
+          </DockPanel>
+          <StackPanel x:Name="ResidueList" Margin="4,2,4,0" MaxHeight="260"/>
+        </StackPanel>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

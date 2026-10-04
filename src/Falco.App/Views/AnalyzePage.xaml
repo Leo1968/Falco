@@ -1,0 +1,59 @@
+<UserControl x:Class="Falco.App.Views.AnalyzePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="Transparent">
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <StackPanel Margin="24,8,24,16">
+
+      <Button Style="{StaticResource BackLink}" Content="{DynamicResource nav.back}" Margin="0,2,0,6" Click="OnBack"/>
+
+      <!-- 系统信息 / 关键服务 -->
+      <Border Style="{StaticResource Card}">
+        <StackPanel>
+          <DockPanel Margin="4,0,0,6">
+            <TextBlock Text="{DynamicResource ana.title}" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource BrushText}" VerticalAlignment="Center"/>
+            <Button DockPanel.Dock="Right" Style="{StaticResource DlgBtn}" Content="{DynamicResource common.refresh}" Margin="8,0,0,0" Click="OnSvcRefresh"/>
+            <TextBlock x:Name="InfoText" Text="" Style="{StaticResource SubText}" VerticalAlignment="Center" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
+          </DockPanel>
+          <StackPanel x:Name="SvcList" Margin="4,2,4,0"/>
+        </StackPanel>
+      </Border>
+
+      <!-- 目录占用 -->
+      <Border Style="{StaticResource Card}">
+        <StackPanel>
+          <DockPanel Margin="4,0,0,6">
+            <TextBlock x:Name="FolderTitle" Text="{DynamicResource ana.folders.title}" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource BrushText}" VerticalAlignment="Center"/>
+            <Button DockPanel.Dock="Right" Style="{StaticResource DlgBtn}" Content="{DynamicResource ana.up}" Margin="8,0,0,0" Click="OnFolderUp"/>
+            <Button DockPanel.Dock="Right" Style="{StaticResource DlgBtn}" Content="{DynamicResource ana.scan.cur}" Margin="8,0,0,0" Click="OnFolderScan"/>
+            <TextBlock x:Name="FolderRes" Text="{DynamicResource ana.drill.hint}" Style="{StaticResource SubText}" VerticalAlignment="Center" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
+          </DockPanel>
+          <StackPanel x:Name="FolderList" Margin="4,2,4,0" MaxHeight="300"/>
+        </StackPanel>
+      </Border>
+
+      <!-- 大文件 -->
+      <Border Style="{StaticResource Card}">
+        <StackPanel>
+          <DockPanel Margin="4,0,0,6">
+            <TextBlock Text="{DynamicResource ana.bigfiles.title}" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource BrushText}" VerticalAlignment="Center"/>
+            <Button DockPanel.Dock="Right" Style="{StaticResource DlgBtn}" Content="{DynamicResource ana.scan.disk}" Margin="8,0,0,0" Click="OnBigAll"/>
+            <Button DockPanel.Dock="Right" Style="{StaticResource DlgBtn}" Content="{DynamicResource ana.scan.user}" Margin="8,0,0,0" Click="OnBigUser"/>
+            <TextBlock x:Name="BigRes" Text="{DynamicResource ana.bigfiles.hint}" Style="{StaticResource SubText}" VerticalAlignment="Center" Margin="8,0,0,0"/>
+          </DockPanel>
+          <StackPanel x:Name="BigList" Margin="4,2,4,0" MaxHeight="280"/>
+        </StackPanel>
+      </Border>
+
+      <!-- 备份与日志 -->
+      <Border Style="{StaticResource Card}">
+        <StackPanel Orientation="Horizontal">
+          <Button Style="{StaticResource DlgBtn}" Content="{DynamicResource ana.openbackup}" Margin="4,0,8,0" Click="OnOpenBackup"/>
+          <Button Style="{StaticResource DlgBtn}" Content="{DynamicResource ana.open.log}" Margin="0,0,8,0" Click="OnOpenLog"/>
+          <Button Style="{StaticResource DlgBtn}" Content="{DynamicResource ana.open.data}" Margin="0,0,8,0" Click="OnOpenData"/>
+          <TextBlock Text="C:\ProgramData\Falco" Style="{StaticResource SubText}" VerticalAlignment="Center"/>
+        </StackPanel>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

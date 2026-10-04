@@ -1,0 +1,538 @@
+﻿<UserControl x:Class="Falco.App.Views.StatusPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="Transparent">
+  <!-- 小窗口时整体可滚动；第三行为自然高度（等高带随内容），窗口高度收至内容 -->
+  <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+    <Grid Margin="24,6,24,10">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <!-- ===== 第一行：健康度 / CPU / GPU / 内存（14:9:9:9） ===== -->
+    <Grid Grid.Row="0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="14*"/>
+        <ColumnDefinition Width="9*"/>
+        <ColumnDefinition Width="9*"/>
+        <ColumnDefinition Width="9*"/>
+      </Grid.ColumnDefinitions>
+
+      <!-- 健康度 -->
+      <Border Grid.Column="0" Style="{StaticResource Card}">
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+          <Grid x:Name="HealthPlanetHost" Width="150" Height="150" HorizontalAlignment="Right" VerticalAlignment="Center"
+                Margin="0,24,6,0" Grid.RowSpan="4" Panel.ZIndex="-1" IsHitTestVisible="False" Opacity="0.92">
+            <Viewport3D x:Name="Globe3D">
+              <Viewport3D.Camera>
+                <PerspectiveCamera Position="0,0,3.1" LookDirection="0,0,-1" UpDirection="0,1,0" FieldOfView="45"/>
+              </Viewport3D.Camera>
+              <ModelVisual3D>
+                <ModelVisual3D.Content>
+                  <Model3DGroup>
+                    <AmbientLight Color="#9A9A9A"/>
+                    <DirectionalLight Color="#FFFFFF" Direction="-0.6,-0.25,-1"/>
+                    <GeometryModel3D x:Name="GlobeGeometry">
+                      <GeometryModel3D.Material>
+                        <DiffuseMaterial>
+                          <DiffuseMaterial.Brush>
+                            <ImageBrush x:Name="GlobeBrush"/>
+                          </DiffuseMaterial.Brush>
+                        </DiffuseMaterial>
+                      </GeometryModel3D.Material>
+                      <GeometryModel3D.Transform>
+                        <RotateTransform3D>
+                          <RotateTransform3D.Rotation>
+                            <AxisAngleRotation3D x:Name="GlobeSpin" Axis="0,1,0" Angle="0"/>
+                          </RotateTransform3D.Rotation>
+                        </RotateTransform3D>
+                      </GeometryModel3D.Transform>
+                    </GeometryModel3D>
+                  </Model3DGroup>
+                </ModelVisual3D.Content>
+              </ModelVisual3D>
+            </Viewport3D>
+          </Grid>
+          <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{DynamicResource card.health}" Style="{StaticResource CardTitle}" Foreground="{DynamicResource BrushYellow}"/>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+              <Border Style="{StaticResource Badge}" Margin="0,0,6,0"><TextBlock x:Name="Tag1" Text="…" FontSize="10" Foreground="{DynamicResource BrushText2}"/></Border>
+              <Border Style="{StaticResource Badge}" Margin="0,0,6,0"><TextBlock x:Name="Tag2" Text="…" FontSize="10" Foreground="{DynamicResource BrushText2}"/></Border>
+              <Border Style="{StaticResource Badge}"><TextBlock x:Name="Tag3" Text="…" FontSize="10" Foreground="{DynamicResource BrushText2}"/></Border>
+            </StackPanel>
+          </Grid>
+          <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,8,0,0">
+            <TextBlock x:Name="HealthScore" Text="--" FontSize="40" FontWeight="Bold" Foreground="{DynamicResource BrushYellow}"/>
+            <TextBlock x:Name="HealthWord" Text="{DynamicResource common.checking}" Foreground="{DynamicResource BrushGreen}" FontSize="14" FontWeight="Bold" Margin="12,0,0,0" VerticalAlignment="Center"/>
+          </StackPanel>
+          <TextBlock x:Name="HealthNote" Text="" Style="{StaticResource SubText}" Grid.Row="2" Margin="0,12,0,0" VerticalAlignment="Top"/>
+          <TextBlock x:Name="HealthUp" Text="" Style="{StaticResource SubText}" Grid.Row="3" Margin="0,6,0,0"/>
+        </Grid>
+      </Border>
+
+      <!-- CPU -->
+      <Border Grid.Column="1" Style="{StaticResource Card}">
+        <Grid>
+          <!-- 标题/大字顶排；* 空行吸收等高拉伸；图表/说明沉底，说明与健康度卡"已运行"文字水平对齐 -->
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+          <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{DynamicResource card.cpu}" Style="{StaticResource CardTitle}"/>
+            <Border Grid.Column="1" Style="{StaticResource Badge}"><TextBlock x:Name="CpuBadge" Text="" FontSize="10" Foreground="{DynamicResource BrushText2}"/></Border>
+          </Grid>
+          <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,8,0,0">
+            <TextBlock x:Name="CpuPct" Text="--%" Style="{StaticResource BigValue}"/>
+            <TextBlock x:Name="CpuWord" Text="" FontSize="12" Foreground="#34D399" Margin="8,10,0,0"/>
+          </StackPanel>
+          <!-- 彩条底边与 CPU 立柱底边对齐：立柱区 8+44=52px，条高 8px → 顶边距 44。
+               注意 Canvas 必须显式 Top：Stretch+固定高会被 WPF 居中，导致立柱随窗口高度浮动、与彩条错位。 -->
+          <Canvas x:Name="CpuChart" Grid.Row="3" Height="44" Margin="0,8,0,0" VerticalAlignment="Top"/>
+          <TextBlock x:Name="CpuSub" Text="{DynamicResource common.detecting}" Style="{StaticResource SubText}" Grid.Row="4" Margin="0,8,0,0"/>
+        </Grid>
+      </Border>
+
+      <!-- GPU -->
+      <Border Grid.Column="2" Style="{StaticResource Card}">
+        <Grid>
+          <!-- 标题/大字顶排；* 空行吸收等高拉伸；图表/说明沉底，说明与健康度卡"已运行"文字水平对齐 -->
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+          <TextBlock Text="{DynamicResource card.gpu}" Style="{StaticResource CardTitle}" Grid.Row="0"/>
+          <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,8,0,0">
+            <TextBlock x:Name="GpuPct" Text="--%" Style="{StaticResource BigValue}"/>
+            <TextBlock x:Name="GpuWord" Text="" FontSize="12" Foreground="#34D399" Margin="8,10,0,0"/>
+          </StackPanel>
+          <Canvas x:Name="GpuChart" Grid.Row="3" Height="44" Margin="0,8,0,0" VerticalAlignment="Top">
+            <Polyline x:Name="GpuLine" Stroke="{DynamicResource BrushAccent}" StrokeThickness="1.5"/>
+          </Canvas>
+          <TextBlock x:Name="GpuSub" Text="{DynamicResource common.detecting}" Style="{StaticResource SubText}" Grid.Row="4" Margin="0,8,0,0"/>
+        </Grid>
+      </Border>
+
+      <!-- 内存 -->
+      <Border Grid.Column="3" Style="{StaticResource Card}">
+        <Grid>
+          <!-- 标题/大字顶排；* 空行吸收等高拉伸；图表/说明沉底，说明与健康度卡"已运行"文字水平对齐 -->
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+          <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{DynamicResource card.mem}" Style="{StaticResource CardTitle}"/>
+            <Border Grid.Column="1" Style="{StaticResource Badge}"><TextBlock x:Name="MemBadge" Text="" FontSize="10" Foreground="{DynamicResource BrushText2}"/></Border>
+          </Grid>
+          <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,8,0,0">
+            <TextBlock x:Name="MemPct" Text="--%" Style="{StaticResource BigValue}"/>
+            <TextBlock Text="{DynamicResource mem.used}" FontSize="12" Foreground="{DynamicResource BrushText2}" Margin="8,10,0,0"/>
+          </StackPanel>
+          <!-- 底边与 CPU 立柱底边对齐：条高显式 8px，44+8=52 = 立柱区 8+44 -->
+          <ProgressBar x:Name="MemBar" Grid.Row="3" Margin="0,44,0,0" Height="8" VerticalAlignment="Top" Value="0">
+            <ProgressBar.Foreground>
+              <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                <GradientStop Color="#34D399" Offset="0"/>
+                <GradientStop Color="#FBBF24" Offset="0.6"/>
+                <GradientStop Color="#EF4444" Offset="1"/>
+              </LinearGradientBrush>
+            </ProgressBar.Foreground>
+          </ProgressBar>
+          <TextBlock x:Name="MemSub" Text="{DynamicResource common.detecting}" Style="{StaticResource SubText}" Grid.Row="4" Margin="0,8,0,0"/>
+        </Grid>
+      </Border>
+    </Grid>
+
+    <!-- ===== 第二行：温度 / 磁盘 / 网络 / 电源计划 ===== -->
+    <Grid Grid.Row="1">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="14*"/>
+        <ColumnDefinition Width="9*"/>
+        <ColumnDefinition Width="9*"/>
+        <ColumnDefinition Width="9*"/>
+      </Grid.ColumnDefinitions>
+
+      <!-- 温度 -->
+      <Border Grid.Column="0" Style="{StaticResource Card}">
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+          <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{DynamicResource card.temp}" Style="{StaticResource CardTitle}"/>
+            <Border Grid.Column="1" Style="{StaticResource Badge}"><TextBlock x:Name="TempBadge" Text="" FontSize="10" Foreground="{DynamicResource BrushText2}"/></Border>
+          </Grid>
+          <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,8,0,0">
+            <TextBlock x:Name="TempVal" Text="--°" Style="{StaticResource BigValue}"/>
+            <TextBlock Text="CPU" FontSize="12" Foreground="{DynamicResource BrushText2}" Margin="8,10,0,0"/>
+          </StackPanel>
+          <StackPanel Grid.Row="2" Margin="0,44,0,0" VerticalAlignment="Top">
+            <ProgressBar x:Name="TempBar" Value="0" Maximum="105" Foreground="#34D399"/>
+            <!-- GPU 温度：仅 LHM 暴露（iGPU 多数无机内传感器，读不到显示占位符）；行高锁定 19，GPU 条顶=44+8+12+19+6=89，与 Disk 条对齐 -->
+            <StackPanel Orientation="Horizontal" Margin="0,12,0,0" Height="19">
+              <TextBlock x:Name="GpuTempVal" Text="--°" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource BrushText}"/>
+              <TextBlock Text="GPU" FontSize="11" Foreground="{DynamicResource BrushText2}" Margin="6,3,0,0"/>
+            </StackPanel>
+            <ProgressBar x:Name="GpuTempBar" Margin="0,6,0,0" Value="0" Maximum="105" Foreground="#34D399"/>
+          </StackPanel>
+          <TextBlock x:Name="TempSub" Text="{DynamicResource common.detecting}" Style="{StaticResource SubText}" Grid.Row="3" Margin="0,6,0,0" TextWrapping="Wrap"/>
+        </Grid>
+      </Border>
+
+      <!-- 磁盘 -->
+      <Border Grid.Column="1" Style="{StaticResource Card}">
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+          <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{DynamicResource card.disk}" Style="{StaticResource CardTitle}"/>
+            <Border Grid.Column="1" Style="{StaticResource Badge}"><TextBlock x:Name="DiskBadge" Text="" FontSize="10" Foreground="{DynamicResource BrushText2}"/></Border>
+          </Grid>
+          <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,8,0,0">
+            <TextBlock x:Name="DiskFree" Text="-- GB" Style="{StaticResource BigValue}"/>
+            <TextBlock Text="{DynamicResource disk.free}" FontSize="12" Foreground="{DynamicResource BrushText2}" Margin="8,10,0,0"/>
+          </StackPanel>
+          <!-- 条顶 89 = 温度卡 GPU 条（44+8+12+19+6），两条水平对齐 -->
+          <ProgressBar x:Name="DiskBar" Grid.Row="2" Margin="0,89,0,0" VerticalAlignment="Top" Value="0">
+            <ProgressBar.Foreground>
+              <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                <GradientStop Color="#F59E0B" Offset="0"/>
+                <GradientStop Color="#FBBF24" Offset="1"/>
+              </LinearGradientBrush>
+            </ProgressBar.Foreground>
+          </ProgressBar>
+          <TextBlock x:Name="DiskSub" Text="{DynamicResource common.detecting}" Style="{StaticResource SubText}" Grid.Row="3" Margin="0,6,0,0"/>
+        </Grid>
+      </Border>
+
+      <!-- 网络 -->
+      <Border Grid.Column="2" Style="{StaticResource Card}">
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+          <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{DynamicResource card.net}" Style="{StaticResource CardTitle}"/>
+            <Border Grid.Column="1" Style="{StaticResource Badge}"><TextBlock x:Name="NetBadge" Text="" FontSize="10" Foreground="{DynamicResource BrushText2}"/></Border>
+          </Grid>
+          <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,8,0,0">
+            <TextBlock x:Name="NetSpeed" Text="--" Style="{StaticResource BigValue}"/>
+            <TextBlock Text="↓" FontSize="13" Foreground="{DynamicResource BrushBlue}" Margin="6,10,0,0"/>
+          </StackPanel>
+          <Canvas x:Name="NetChart" Grid.Row="2" Height="44" Margin="0,8,0,0">
+            <Polyline x:Name="NetLine" Stroke="{DynamicResource BrushBlue}" StrokeThickness="1.5"/>
+          </Canvas>
+          <TextBlock x:Name="NetSub" Text="{DynamicResource common.detecting}" Style="{StaticResource SubText}" Grid.Row="3" Margin="0,6,0,0" TextTrimming="CharacterEllipsis"/>
+        </Grid>
+      </Border>
+
+      <!-- 电源计划 -->
+      <Border Grid.Column="3" Style="{StaticResource Card}">
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+          <TextBlock Text="{DynamicResource card.power}" Style="{StaticResource CardTitle}" Grid.Row="0"/>
+          <TextBlock x:Name="PowerName" Text="{DynamicResource common.checking}" Style="{StaticResource BigValue}" Grid.Row="1" Margin="0,8,0,0" TextWrapping="Wrap"/>
+          <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="0,8,0,0" VerticalAlignment="Bottom">
+            <Button x:Name="PwrSaver" Style="{StaticResource PillBtn}" Content="{DynamicResource power.saver.short}" Padding="12,6" FontSize="11" Margin="0,0,6,0" Click="OnPowerSaver"/>
+            <Button x:Name="PwrBalanced" Style="{StaticResource PillBtn}" Content="{DynamicResource power.balanced.short}" Padding="12,6" FontSize="11" Margin="0,0,6,0" Click="OnPowerBalanced"/>
+            <Button x:Name="PwrHigh" Style="{StaticResource PillBtn}" Content="{DynamicResource power.high.short}" Padding="12,6" FontSize="11" Click="OnPowerHigh"/>
+          </StackPanel>
+          <TextBlock Text="{DynamicResource power.by}" Style="{StaticResource SubText}" Grid.Row="3" Margin="0,6,0,0"/>
+        </Grid>
+      </Border>
+    </Grid>
+
+    <!-- ===== 第三行：左快速操作（电脑管家式）+ 右每时名画 ===== -->
+    <Grid Grid.Row="2">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="300"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+
+      <!-- 左：快速操作（立即加速大按钮 + 1×4 竖排宫格）。无标题行，按钮组贴卡顶排列，
+           "立即加速"按钮顶边与右卡名画标题顶边对齐（Padding 上边距 12 = 右卡 10 + 标题顶距 2）。
+           宫格占第 2 行星号高度，六格均分以消除下方留白。 -->
+      <Border Grid.Column="0" x:Name="QuickCard" Style="{StaticResource Card}" Margin="6" Padding="14,12" Height="420">
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+          </Grid.RowDefinitions>
+          <!-- 立即加速：琥珀渐变大按钮（白字）；图标为 falco.ico 游隼 logo，经 Tag 传入模板 -->
+          <Button Grid.Row="0" x:Name="BtnBoost" Click="OnBoost" Cursor="Hand" Focusable="False" MinHeight="118">
+            <Button.Template>
+              <ControlTemplate TargetType="Button">
+                <Border x:Name="bd" CornerRadius="12">
+                  <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                      <GradientStop Color="#F59E0B" Offset="0"/>
+                      <GradientStop Color="#D97706" Offset="1"/>
+                    </LinearGradientBrush>
+                  </Border.Background>
+                  <Border.Effect>
+                    <DropShadowEffect Color="#000000" BlurRadius="10" ShadowDepth="0" Opacity="0.25"/>
+                  </Border.Effect>
+                  <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Image Source="{TemplateBinding Tag}" Width="30" Height="30" Stretch="Uniform" HorizontalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality"/>
+                    <TextBlock Text="{DynamicResource qa.boost}" FontSize="17" FontWeight="Bold" Foreground="#FFFFFF" HorizontalAlignment="Center" Margin="0,4,0,0"/>
+                    <TextBlock Text="{DynamicResource qa.boost.sub}" FontSize="10" Foreground="#FFE9C4" HorizontalAlignment="Center" Margin="0,3,0,0"/>
+                  </StackPanel>
+                </Border>
+                <ControlTemplate.Triggers>
+                  <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="bd" Property="Opacity" Value="0.88"/></Trigger>
+                  <Trigger Property="IsPressed" Value="True"><Setter TargetName="bd" Property="Opacity" Value="0.72"/></Trigger>
+                  <Trigger Property="IsEnabled" Value="False"><Setter TargetName="bd" Property="Opacity" Value="0.5"/></Trigger>
+                </ControlTemplate.Triggers>
+              </ControlTemplate>
+            </Button.Template>
+          </Button>
+
+          <!-- 1×4 竖排功能宫格（图标：Segoe Fluent Icons，组合一·诊断系）。
+               导航栏只留「状态」单入口后，清理/开机管理/优化 全部由此进入；
+               2026-10-01 裁剪：进程管理与系统分析入口移除（页面代码保留，宿主标注逻辑保留可日后挂回仪表盘）。 -->
+          <UniformGrid Grid.Row="1" Columns="1" Rows="4" Margin="0,12,0,0" VerticalAlignment="Top">
+            <Button x:Name="BtnCheckup" Click="OnCheckup" Style="{StaticResource QuickTile}">
+              <StackPanel Orientation="Horizontal">
+                <TextBlock FontFamily="Segoe Fluent Icons" Text="&#xE9D9;" FontSize="15" Foreground="{DynamicResource BrushAccent}"/>
+                <TextBlock Text="{DynamicResource qa.checkup}" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource BrushText}" Margin="9,0,0,0" VerticalAlignment="Center"/>
+              </StackPanel>
+            </Button>
+            <Button x:Name="BtnClean" Click="OnClean" Style="{StaticResource QuickTile}">
+              <StackPanel Orientation="Horizontal">
+                <TextBlock FontFamily="Segoe Fluent Icons" Text="&#xE74D;" FontSize="15" Foreground="{DynamicResource BrushAccent}"/>
+                <TextBlock Text="{DynamicResource qa.clean}" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource BrushText}" Margin="9,0,0,0" VerticalAlignment="Center"/>
+              </StackPanel>
+            </Button>
+            <Button x:Name="BtnStartup" Click="OnStartup" Style="{StaticResource QuickTile}">
+              <StackPanel Orientation="Horizontal">
+                <TextBlock FontFamily="Segoe Fluent Icons" Text="&#xE7E8;" FontSize="15" Foreground="{DynamicResource BrushAccent}"/>
+                <TextBlock Text="{DynamicResource qa.startup}" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource BrushText}" Margin="9,0,0,0" VerticalAlignment="Center"/>
+              </StackPanel>
+            </Button>
+            <Button x:Name="BtnOpt" Click="OnOpt" Style="{StaticResource QuickTile}">
+              <StackPanel Orientation="Horizontal">
+                <TextBlock FontFamily="Segoe Fluent Icons" Text="&#xEC4A;" FontSize="15" Foreground="{DynamicResource BrushAccent}"/>
+                <TextBlock Text="{DynamicResource qa.opt}" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource BrushText}" Margin="9,0,0,0" VerticalAlignment="Center"/>
+              </StackPanel>
+            </Button>
+          </UniformGrid>
+        </Grid>
+      </Border>
+
+      <!-- 右：每时名画：与左卡等高（固定 420，避免 ScrollViewer 内 ActualHeight 绑定布局环），画作全幅铺底 + 信息面板玻璃浮层 -->
+      <Border Grid.Column="1" x:Name="ArtCard" Style="{StaticResource Card}" Margin="6" Padding="10" ClipToBounds="True" Height="420">
+        <Grid Background="{DynamicResource BrushArtBg}">
+          <!-- 磨砂底层：画作 ImageBrush 铺满出血（Rectangle 不参与布局测量，防 UniformToFill 撑爆滚动范围），玻璃取景自它 -->
+          <Rectangle Margin="-36">
+            <Rectangle.Fill>
+              <ImageBrush x:Name="ArtBlurBrush" Stretch="UniformToFill"/>
+            </Rectangle.Fill>
+            <Rectangle.Effect>
+              <BlurEffect Radius="36"/>
+            </Rectangle.Effect>
+          </Rectangle>
+          <!-- 主画作（清晰，靠左避让玻璃面板；弹性行有多高就放多大，640 封顶防超高分屏失真） -->
+          <Image x:Name="ArtImage" Stretch="Uniform" MaxHeight="640" Margin="12" HorizontalAlignment="Left" RenderOptions.BitmapScalingMode="HighQuality"/>
+          <!-- 玻璃浮层：信息面板 -->
+          <Border HorizontalAlignment="Right" Width="280" Margin="14" CornerRadius="10"
+                  Background="{DynamicResource BrushGlass}" BorderBrush="{DynamicResource BrushGlassBorder}" BorderThickness="1" Padding="12">
+            <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+          <!-- 表头磁贴：画廊标签风 + 右上角「换一幅」圆钮（本地瞬时换 + 按需抓新） -->
+          <Grid Grid.Row="0" Margin="0,2,0,10">
+            <Border CornerRadius="12" MinHeight="118"
+                    Background="{DynamicResource BrushArtBg}" BorderBrush="{DynamicResource BrushAccent}" BorderThickness="1">
+              <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12,10">
+                <Border Width="34" Height="34" CornerRadius="17" Background="#FFFFFF" HorizontalAlignment="Center">
+                  <Viewbox Width="18" Height="18" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Path Data="F0 M21.632,149.888 c-4.142,0 -7.5,3.358 -7.5,7.5 s3.358,7.5 7.5,7.5 h160.094 c4.142,0 7.5,-3.358 7.5,-7.5 s-3.358,-7.5 -7.5,-7.5 h-16.547 V88.429 l16.547,0 c3.297,0 6.208,-2.154 7.172,-5.307 c0.964,-3.153 -0.245,-6.566 -2.978,-8.411 l-80.047,-53.997 c-2.535,-1.71 -5.854,-1.71 -8.389,0 L17.438,74.712 c-2.733,1.844 -3.942,5.257 -2.978,8.411 c0.964,3.153 3.875,5.307 7.172,5.307 l16.547,0 v61.459 H21.632 Z M112.845,88.43 v61.459 H90.512 V88.43 L112.845,88.43 Z M150.179,149.888 h-22.333 V88.43 l22.333,0 V149.888 Z M101.679,35.979 l55.518,37.45 l-111.035,0 L101.679,35.979 Z M53.179,88.43 l22.333,0 v61.459 H53.179 V88.43 Z M198.357,173.925 H5 c-2.761,0 -5,2.239 -5,5 s2.239,5 5,5 h193.357 c2.761,0 5,-2.239 5,-5 S201.119,173.925 198.357,173.925 Z"
+                          Fill="#1A1409"/>
+                  </Viewbox>
+                </Border>
+                <TextBlock Text="{DynamicResource art.title}" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource BrushText}" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" Margin="0,6,0,0"/>
+              </StackPanel>
+            </Border>
+            <!-- 换一幅：26px 玻璃圆钮，刷新图标，悬停琥珀描边 -->
+            <Button x:Name="BtnNextArt" Width="18.2" Height="18.2" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="8"
+                    Click="OnNextArt" Cursor="Hand" Focusable="False"
+                    ToolTip="{DynamicResource art.next.tip}" AutomationProperties.Name="{DynamicResource art.next.tip}">
+              <Button.Template>
+                <ControlTemplate TargetType="Button">
+                  <Border x:Name="bd" CornerRadius="9.1" Background="{DynamicResource BrushCard}" BorderBrush="{DynamicResource BrushGlassBorder}" BorderThickness="1">
+                    <TextBlock FontFamily="Segoe Fluent Icons" Text="&#xE72C;" FontSize="7.7" Foreground="{DynamicResource BrushAccent}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                  </Border>
+                  <ControlTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="bd" Property="BorderBrush" Value="{DynamicResource BrushAccent}"/></Trigger>
+                    <Trigger Property="IsPressed" Value="True"><Setter TargetName="bd" Property="Opacity" Value="0.7"/></Trigger>
+                  </ControlTemplate.Triggers>
+                </ControlTemplate>
+              </Button.Template>
+            </Button>
+          </Grid>
+          <TextBlock x:Name="ArtTitle" Grid.Row="1" Text="" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource BrushYellow}" TextWrapping="Wrap" Margin="0,0,0,6"/>
+          <TextBlock x:Name="ArtArtist" Grid.Row="2" Text="" FontSize="13" Foreground="{DynamicResource BrushText}" TextWrapping="Wrap" Margin="0,0,0,10"/>
+          <StackPanel Grid.Row="3" VerticalAlignment="Top">
+            <TextBlock Text="{DynamicResource art.year}" FontSize="10" Foreground="{DynamicResource BrushText2}" Margin="0,2,0,0"/>
+            <TextBlock x:Name="ArtYear" Text="" FontSize="12" Foreground="{DynamicResource BrushText}" TextWrapping="Wrap" Margin="0,0,0,6"/>
+            <TextBlock Text="{DynamicResource art.genre}" FontSize="10" Foreground="{DynamicResource BrushText2}"/>
+            <TextBlock x:Name="ArtStyle" Text="" FontSize="12" Foreground="{DynamicResource BrushText}" TextWrapping="Wrap" Margin="0,0,0,6"/>
+            <TextBlock Text="{DynamicResource art.museum}" FontSize="10" Foreground="{DynamicResource BrushText2}"/>
+            <TextBlock x:Name="ArtMuseum" Text="" FontSize="12" Foreground="{DynamicResource BrushText}" TextWrapping="Wrap"/>
+          </StackPanel>
+          <TextBlock x:Name="ArtCredit" Grid.Row="4" Text="" FontSize="9" Foreground="#7A7261" TextWrapping="Wrap" VerticalAlignment="Bottom" Margin="0,6,0,0"/>
+            </Grid>
+          </Border>
+        </Grid>
+      </Border>
+    </Grid>
+
+    <!-- 进程列表（原状态页区域，待删除的旧块开头） -->
+    <Border x:Name="LegacyProcCard" Grid.Row="2" Style="{StaticResource Card}" Margin="6" Padding="16,10,16,12" Visibility="Collapsed">
+      <DockPanel>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="4,2,0,8">
+          <TextBlock Text="🔍 进程" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource BrushText}"/>
+          <TextBlock x:Name="ProcCount" Text="· 加载中" FontSize="11" Foreground="{DynamicResource BrushText2}" Margin="10,2,0,0" VerticalAlignment="Center"/>
+        </StackPanel>
+        <!-- 表头与行共用列定义：名称自适应 + 三列固定右对齐 -->
+        <Grid DockPanel.Dock="Top" Margin="0,0,0,6">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="70"/>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="90"/>
+          </Grid.ColumnDefinitions>
+          <TextBlock Text="名称" FontSize="11" Foreground="{DynamicResource BrushText2}" Margin="6,0,0,0"/>
+          <TextBlock Grid.Column="1" Text="PID" FontSize="11" Foreground="{DynamicResource BrushText2}" TextAlignment="Right" Margin="0,0,6,0"/>
+          <TextBlock Grid.Column="2" Text="CPU ↓" FontSize="11" Foreground="{DynamicResource BrushText2}" TextAlignment="Right" Margin="0,0,6,0"/>
+          <TextBlock Grid.Column="3" Text="内存" FontSize="11" Foreground="{DynamicResource BrushText2}" TextAlignment="Right" Margin="0,0,6,0"/>
+        </Grid>
+        <ListView x:Name="ProcList" Background="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+          <ListView.ItemContainerStyle>
+            <Style TargetType="ListViewItem">
+              <Setter Property="Foreground" Value="{DynamicResource BrushText}"/>
+              <Setter Property="Template">
+                <Setter.Value>
+                  <ControlTemplate TargetType="ListViewItem">
+                    <Border x:Name="bd" Background="Transparent" CornerRadius="6" Margin="0,1">
+                      <ContentPresenter/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                      <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="bd" Property="Background" Value="{DynamicResource BrushCardAltHover}"/></Trigger>
+                      <Trigger Property="IsSelected" Value="True"><Setter TargetName="bd" Property="Background" Value="{DynamicResource BrushBorder2}"/></Trigger>
+                    </ControlTemplate.Triggers>
+                  </ControlTemplate>
+                </Setter.Value>
+              </Setter>
+            </Style>
+          </ListView.ItemContainerStyle>
+          <ListView.ItemTemplate>
+            <DataTemplate>
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="70"/>
+                  <ColumnDefinition Width="150"/>
+                  <ColumnDefinition Width="90"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="6,0,0,0" VerticalAlignment="Center">
+                  <Ellipse Width="7" Height="7" Fill="{Binding DotBrush}" VerticalAlignment="Center" Margin="0,0,7,0">
+                    <Ellipse.Triggers>
+                      <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                        <BeginStoryboard>
+                          <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.25" To="1.0" Duration="0:0:0.7" AutoReverse="True" RepeatBehavior="Forever"/>
+                          </Storyboard>
+                        </BeginStoryboard>
+                      </EventTrigger>
+                    </Ellipse.Triggers>
+                  </Ellipse>
+                  <Image Width="16" Height="16" Source="{Binding Icon}" VerticalAlignment="Center" Margin="0,0,6,0" RenderOptions.BitmapScalingMode="HighQuality"/>
+                  <TextBlock Text="{Binding Name}" FontSize="12" Foreground="#F2EFE7" VerticalAlignment="Center"/>
+                </StackPanel>
+                <TextBlock Grid.Column="1" Text="{Binding Pid}" FontSize="11" Foreground="#7A7261" TextAlignment="Right" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,6,0" VerticalAlignment="Center">
+                  <ProgressBar Width="48" Height="7" Value="{Binding CpuPct}" Maximum="100" Foreground="#34D399" Background="#2A2519" VerticalAlignment="Center">
+                    <ProgressBar.Template>
+                      <ControlTemplate TargetType="ProgressBar">
+                        <Grid>
+                          <Border Background="{TemplateBinding Background}" CornerRadius="3"/>
+                          <Border x:Name="PART_Indicator" HorizontalAlignment="Left" Background="{TemplateBinding Foreground}" CornerRadius="3"/>
+                        </Grid>
+                      </ControlTemplate>
+                    </ProgressBar.Template>
+                  </ProgressBar>
+                  <TextBlock Text="{Binding CpuText}" FontSize="11" Foreground="{DynamicResource BrushText2}" Margin="8,0,0,0" VerticalAlignment="Center" MinWidth="42" TextAlignment="Right"/>
+                </StackPanel>
+                <TextBlock Grid.Column="3" Text="{Binding MemText}" FontSize="11" Foreground="#F2EFE7" TextAlignment="Right" Margin="0,0,6,0" VerticalAlignment="Center"/>
+              </Grid>
+            </DataTemplate>
+          </ListView.ItemTemplate>
+        </ListView>
+      </DockPanel>
+    </Border>
+  </Grid>
+  </ScrollViewer>
+</UserControl>

@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>..\..\falco.ico</ApplicationIcon>
+    <AssemblyName>Falco</AssemblyName>
+    <RootNamespace>Falco.App</RootNamespace>
+    <AssemblyTitle>Falco GUI</AssemblyTitle>
+    <Product>Falco</Product>
+    <Version>2.4.9</Version>
+  </PropertyGroup>
+
+  <!-- LibreHardwareMonitor：本地 DLL 直接引用（与 PS 版同一份 lib/，无需 NuGet 网络） -->
+  <ItemGroup>
+    <Reference Include="LibreHardwareMonitorLib"><HintPath>..\..\lib\LibreHardwareMonitor\LibreHardwareMonitorLib.dll</HintPath></Reference>
+    <Reference Include="HidSharp"><HintPath>..\..\lib\LibreHardwareMonitor\HidSharp.dll</HintPath></Reference>
+    <Reference Include="System.IO.Ports"><HintPath>..\..\lib\LibreHardwareMonitor\System.IO.Ports.dll</HintPath></Reference>
+    <Reference Include="System.Management"><HintPath>..\..\lib\LibreHardwareMonitor\System.Management.dll</HintPath></Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Remove="System.Windows.Forms" />
+    <Using Remove="System.Drawing" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\falco.ico" Link="falco.ico" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\assets\earth.png" Link="assets\earth.png" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\assets\earth-map.jpg" Link="assets\earth-map.jpg" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\assets\nga.json.gz" Link="assets\nga.json.gz" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,28 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+  <!-- 暗黑主题（默认）：与 PS 版完全一致的暖黑调色板 + 语义扩展键 -->
+  <SolidColorBrush x:Key="BrushWindow" Color="#171511"/>
+  <SolidColorBrush x:Key="BrushCard" Color="#1F1B15"/>
+  <SolidColorBrush x:Key="BrushCardBorder" Color="#322D22"/>
+  <SolidColorBrush x:Key="BrushNav" Color="#25221A"/>
+  <SolidColorBrush x:Key="BrushNavBorder" Color="#38332A"/>
+  <SolidColorBrush x:Key="BrushText" Color="#F2EFE7"/>
+  <SolidColorBrush x:Key="BrushText2" Color="#A69D87"/>
+  <SolidColorBrush x:Key="BrushAccent" Color="#F59E0B"/>
+  <SolidColorBrush x:Key="BrushGreen" Color="#34D399"/>
+  <SolidColorBrush x:Key="BrushYellow" Color="#FBBF24"/>
+  <SolidColorBrush x:Key="BrushRed" Color="#EF4444"/>
+  <SolidColorBrush x:Key="BrushBlue" Color="#3B82F6"/>
+  <SolidColorBrush x:Key="BrushCapsule" Color="#322D22"/>
+  <SolidColorBrush x:Key="BrushTrack" Color="#3A3529"/>
+
+  <!-- 语义扩展键（主题差异点） -->
+  <SolidColorBrush x:Key="BrushCardAlt" Color="#262218"/>
+  <SolidColorBrush x:Key="BrushCardAltHover" Color="#2E2A20"/>
+  <SolidColorBrush x:Key="BrushBorder2" Color="#3A3428"/>
+  <SolidColorBrush x:Key="BrushArtBg" Color="#141210"/>
+  <SolidColorBrush x:Key="BrushOnAccent" Color="#1A1409"/>
+  <SolidColorBrush x:Key="BrushGlass" Color="#B4201C14"/>
+  <SolidColorBrush x:Key="BrushGlassBorder" Color="#59F2EFE7"/>
+</ResourceDictionary>

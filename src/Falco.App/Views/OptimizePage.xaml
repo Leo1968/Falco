@@ -1,0 +1,73 @@
+<UserControl x:Class="Falco.App.Views.OptimizePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="Transparent">
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <StackPanel Margin="24,8,24,16">
+
+      <Button Style="{StaticResource BackLink}" Content="{DynamicResource nav.back}" Margin="0,2,0,6" Click="OnBack"/>
+
+      <!-- 一键优化 -->
+      <Border Style="{StaticResource Card}">
+        <StackPanel>
+          <TextBlock Text="{DynamicResource opt.title}" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource BrushText}" Margin="4,0,0,2"/>
+          <TextBlock Text="{DynamicResource opt.subtitle}" Style="{StaticResource SubText}" Margin="4,4,0,10"/>
+          <UniformGrid Columns="3">
+            <Button Style="{StaticResource DlgBtn}" Margin="4" Click="OnSafeRun">
+              <StackPanel><TextBlock Text="{DynamicResource opt.safe}" FontWeight="Bold"/><TextBlock Text="{DynamicResource opt.safe.hint}" FontSize="10" Foreground="{DynamicResource BrushText2}"/></StackPanel>
+            </Button>
+            <Button Style="{StaticResource DlgBtn}" Margin="4" Click="OnPerfRun">
+              <StackPanel><TextBlock Text="{DynamicResource opt.perf}" FontWeight="Bold"/><TextBlock Text="{DynamicResource opt.perf.hint}" FontSize="10" Foreground="{DynamicResource BrushText2}"/></StackPanel>
+            </Button>
+            <Button Style="{StaticResource DlgBtn}" Margin="4" Click="OnDevRun">
+              <StackPanel><TextBlock Text="{DynamicResource opt.dev}" FontWeight="Bold"/><TextBlock Text="{DynamicResource opt.dev.hint}" FontSize="10" Foreground="{DynamicResource BrushText2}"/></StackPanel>
+            </Button>
+          </UniformGrid>
+          <TextBlock x:Name="RunResult" Text="" Style="{StaticResource SubText}" Margin="4,8,0,0" TextWrapping="Wrap"/>
+        </StackPanel>
+      </Border>
+
+      <!-- 高级选项：状态化单项管理 -->
+      <Border Style="{StaticResource Card}">
+        <StackPanel>
+          <DockPanel Margin="4,0,0,8">
+            <TextBlock Text="{DynamicResource opt.advanced}" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource BrushText}" VerticalAlignment="Center"/>
+            <Button DockPanel.Dock="Right" Style="{StaticResource DlgBtn}" Content="{DynamicResource opt.refresh}" Click="OnRefresh" Margin="8,0,0,0"/>
+            <TextBlock x:Name="TweakSummary" Text="" Style="{StaticResource SubText}" VerticalAlignment="Center" Margin="12,0,0,0"/>
+          </DockPanel>
+          <TextBlock x:Name="AdminHint" Text="" Foreground="#FCA5A5" FontSize="11" Margin="4,0,0,6" Visibility="Collapsed"/>
+          <!-- 表头 -->
+          <Grid Margin="6,0,6,4">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="70"/>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="190"/>
+              <ColumnDefinition Width="70"/>
+              <ColumnDefinition Width="70"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="ID" FontSize="11" Foreground="{DynamicResource BrushText2}"/>
+            <TextBlock Grid.Column="1" Text="{DynamicResource opt.col.tweak}" FontSize="11" Foreground="{DynamicResource BrushText2}"/>
+            <TextBlock Grid.Column="2" Text="{DynamicResource opt.col.state}" FontSize="11" Foreground="{DynamicResource BrushText2}"/>
+            <TextBlock Grid.Column="3" Text="{DynamicResource opt.col.risk}" FontSize="11" Foreground="{DynamicResource BrushText2}"/>
+            <TextBlock Grid.Column="4" Text="{DynamicResource opt.col.action}" FontSize="11" Foreground="{DynamicResource BrushText2}"/>
+          </Grid>
+          <StackPanel x:Name="TweakList"/>
+        </StackPanel>
+      </Border>
+
+      <!-- 备份与恢复 -->
+      <Border Style="{StaticResource Card}">
+        <StackPanel>
+          <TextBlock Text="{DynamicResource opt.backup.title}" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource BrushText}" Margin="4,0,0,4"/>
+          <TextBlock Style="{StaticResource SubText}" Margin="4,0,0,8" TextWrapping="Wrap"
+                     Text="{DynamicResource opt.backup.hint}"/>
+          <StackPanel Orientation="Horizontal">
+            <Button Style="{StaticResource DlgBtn}" Content="{DynamicResource opt.backup.open}" Margin="4" Click="OnOpenBackup"/>
+            <Button Style="{StaticResource DlgBtn}" Content="{DynamicResource opt.revert.all}" Margin="4" Click="OnRevertAll"/>
+            <Button Style="{StaticResource DlgBtn}" Content="{DynamicResource opt.run.script}" Margin="4" Click="OnRunRestore"/>
+          </StackPanel>
+        </StackPanel>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

@@ -1,0 +1,55 @@
+<Window x:Class="Falco.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:v="clr-namespace:Falco.App.Views"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        Title="{DynamicResource app.title}" Height="945" Width="1240" MinHeight="740" MinWidth="1100"
+        WindowStartupLocation="CenterScreen" Background="{DynamicResource BrushWindow}"
+        FontFamily="Microsoft YaHei UI, Segoe UI" Foreground="{DynamicResource BrushText}" FontSize="12"
+        UseLayoutRounding="True">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <!-- 顶部导航：隼徽 + 「状态」单入口（清理/软件/优化/分析 从状态页宫格进入；条高 38、圆角 19、徽章 30 与左端同心，方案二紧凑档） -->
+    <Grid Grid.Row="0">
+      <!-- 窗口标题（WindowChrome 接管后 DWM 不再绘制标题文字，改为自绘；位于拖动热区内） -->
+      <TextBlock Text="{DynamicResource app.title}" FontSize="12" Foreground="{DynamicResource BrushText}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="14,9,0,0"/>
+      <Border HorizontalAlignment="Center" Margin="0,6,0,3" Background="{DynamicResource BrushNav}"
+              CornerRadius="19" Height="38" BorderBrush="{DynamicResource BrushNavBorder}" BorderThickness="1" Padding="6,5">
+        <StackPanel Orientation="Horizontal">
+          <!-- IsHitTestVisibleInChrome：紧凑条整体位于 CaptionHeight(34) 之内，不标注的控件点击会被标题栏拖拽吞掉 -->
+          <Button x:Name="BtnBadge" shell:WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource BadgeBtn}" Click="OnBadgeMenu" PreviewMouseLeftButtonDown="OnBadgePreviewDown" ToolTip="Falco"/>
+          <Button x:Name="BtnLang"  shell:WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource PillBtnSm}" Content="{DynamicResource lang.toggle}" Margin="2,0" FontWeight="Bold" Click="OnToggleLang" ToolTip="中文 / English"/>
+          <Button x:Name="BtnTheme" shell:WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource PillBtnSm}" Margin="2,0" Click="OnToggleTheme" ToolTip="Dark / Light">
+            <!-- 亮度图标（明暗两态通用），48 坐标系下描边 4，缩放至 13px -->
+            <Viewbox Width="13" Height="13">
+              <Grid Width="48" Height="48">
+                <Path Data="M24.0205,35.3535 C30.0956,35.3535 35.0205,30.4286 35.0205,24.3535 C35.0205,18.2784 30.0956,13.3535 24.0205,13.3535 C17.9454,13.3535 13.0205,18.2784 13.0205,24.3535 C13.0205,30.4286 17.9454,35.3535 24.0205,35.3535 Z M38.9603,9.0098 L36.5,11.4842 M11.0674,36.7451 L9.0205,38.8037 M24,41.3533 L24,44.3533 M44,23.3535 L40,23.3535 M37.5324,36.3361 L40,38.8035 M4,24.3535 L8,24.3535 M10.0444,9.0097 L12.0972,11.0625 M24,3.3537 L24,7.3537"
+                      Stroke="{DynamicResource BrushText2}" StrokeThickness="4" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                <Path Data="M24.0205,17.3535 C20.1545,17.3535 17.0205,20.4875 17.0205,24.3535 C17.0205,28.2195 20.1545,31.3535 24.0205,31.3535 Z"
+                      Fill="{DynamicResource BrushText2}"/>
+              </Grid>
+            </Viewbox>
+          </Button>
+          <Button x:Name="NavStat"  shell:WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource PillBtnSm}" Content="{DynamicResource nav.stat}" Margin="2,0"/>
+        </StackPanel>
+      </Border>
+    </Grid>
+
+    <!-- 页面区 -->
+    <ContentControl x:Name="PageHost" Grid.Row="1"/>
+
+    <!-- 底部状态条 -->
+    <Border Grid.Row="2" Background="{DynamicResource BrushNav}" BorderBrush="{DynamicResource BrushNavBorder}"
+            BorderThickness="0,1,0,0" Padding="16,6">
+      <DockPanel>
+        <Ellipse x:Name="DotStatus" Width="8" Height="8" Fill="{DynamicResource BrushGreen}" DockPanel.Dock="Left" Margin="0,0,8,0" VerticalAlignment="Center"/>
+        <TextBlock x:Name="TxtStatus" Text="{DynamicResource status.ready}" Foreground="{DynamicResource BrushText2}" FontSize="11" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+      </DockPanel>
+    </Border>
+  </Grid>
+</Window>
